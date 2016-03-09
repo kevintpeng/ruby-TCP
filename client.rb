@@ -10,7 +10,7 @@ class Client
 
   def ping
     @server.puts "ping"
-    puts @server.gets.chomp
+    puts @server.gets
   end
   #
   # def send
