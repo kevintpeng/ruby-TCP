@@ -3,8 +3,18 @@ class Server
   def initialize(port, ip)
     @server = TCPServer.open(ip, port)
     @connections = {}
+    @name = "Kevin's Server"
+    run
   end
 
+  def run
+    loop do
+      Thread.start(@server.accept) do |client|
+        puts client.gets.chomp
+        client.puts "recieved"
+      end
+    end
+  end
   # def run
   #   loop
   #     Thread.start(@server.accept) do |client|

@@ -7,6 +7,11 @@ class Client
     # send
     # listen
   end
+
+  def ping
+    @server.puts "ping"
+    puts @server.gets.chomp
+  end
   #
   # def send
   #   @request = Thread.new do
@@ -29,4 +34,5 @@ class Client
 end
 
 server = TCPSocket.open("localhost", 3000)
-Client.new(server)
+c = Client.new(server)
+c.ping
