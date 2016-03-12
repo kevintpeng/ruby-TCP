@@ -4,13 +4,28 @@ class Client
     @server = server
     @request = nil
     @response = nil
-    # send
-    # listen
+    send
+    listen
+    @request.join
+    @response.join
   end
 
-  def ping
-    @server.puts "ping"
-    puts @server.gets
+  def send
+    puts "Client: Input a username"
+    @request = Thread.new do
+      loop do
+        "asdf"
+        @server.puts $stdin.gets.chomp
+      end
+    end
+  end
+
+  def listen
+    @response = Thread.new do
+      loop do
+        puts @server.gets.chomp
+      end
+    end
   end
   #
   # def send
@@ -35,4 +50,3 @@ end
 
 server = TCPSocket.open("localhost", 3000)
 c = Client.new(server)
-c.ping

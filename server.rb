@@ -10,6 +10,7 @@ class Server
 
   def run
     loop do
+      p "starting loop"
       Thread.start(@server.accept) do |client|
         puts "New attempted connection from: #{client}"
         username = client.gets.chomp.to_sym
@@ -23,7 +24,23 @@ class Server
         end
         puts "adding user: #{username}"
         @connections[:client][username] = client
-        client.puts "recieved user #{username}"
+        client.puts "Connection established. Welcome #{username}."
+        listen_user username, client
+        puts "ending connection with #{username}"
+        @connections[:client].delete username
+        client.puts "Disconnecting from server."
+      end
+    end
+
+    def listen_user(username, client)
+      loop do
+        msg = client.gets.chomp
+        @connections[:client].each do |othername, otherclient|
+          unless username == othername
+            puts "sending message"
+            otherclient.puts "#{username}: #{msg}"
+          end
+        end
       end
     end
   end
